@@ -13,7 +13,7 @@ $content = '<h1></h1>';
 	
 	$mysqli = new mysqli('localhost', 'root', '', 'billingsystem');
 
-    $sql="insert into traffic (TrafficCode, TrafficId,B.SType,Status,SpCode,Charges) values ('$trafficcode','$trafficid','$bstype','$status','spcode','charges')";
+    $sql="insert into traffic (TrafficCode, TrafficId,BSType,Status,SpCode,Charges) values ('$trafficcode','$trafficid','$bstype','$status','spcode','charges')";
 if (!$mysqli->query($sql)){
     trigger_error($mysqli->error);
 }  else {
@@ -63,7 +63,7 @@ if ($result = $mysqli->query($sql)){
     $row=$result->fetch_assoc();
     $trafficcode = $row['TrafficCode'];
     $trafficid = $row['TrafficId'];
-    $bstype = $row['B.SType'];
+    $bstype = $row['BSType'];
     $status = $row['Status'];
     $spcode=$row['SpCode'];
     $charges=$row['Charges'];
