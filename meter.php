@@ -27,7 +27,7 @@ if( isset( $_REQUEST['update'] ))
 	
 	$mysqli = new mysqli('localhost', 'root', '', 'billingsystem');
 
-    $sql="update bank set MERTERNUMBER='$meternumber', TYPE='$type', COND='$cond' where METERNUMBER=$meternumber";
+    $sql="update meter set TYPE='$type', COND='$cond' where METERNUMBER=$meternumber";
 if (!$mysqli->query($sql)){
     trigger_error($mysqli->error);
 }  else {
@@ -36,14 +36,14 @@ if (!$mysqli->query($sql)){
 }
 if( isset( $_REQUEST['search'] ))
 {
-    $cond = $_REQUEST['cond'];
+    $meternumber = $_REQUEST['meternumber'];
 $mysqli = new mysqli('localhost', 'root', '', 'billingsystem');
-$sql = "select METERNUMBER, TYPE, COND from meter where COND like '%$cond%'";
+$sql = "select METERNUMBER, TYPE, COND from meter where TYPE like '%$type%'";
 if ($stmt=$mysqli->prepare($sql)){
 $stmt->execute();
 $stmt->bind_result($METERNUMBER, $TYPE, $COND);
 while ($stmt->fetch()){
-    echo "$METERNUMBER $TYPE  $COND  <br />";
+    echo "$METERNUMBER | $TYPE | $COND  <br />";
 }
 $stmt->close();
 }  else {
@@ -58,9 +58,9 @@ $mysqli = new mysqli('localhost', 'root', '', 'billingsystem');
 $sql = "select METERNUMBER, TYPE, COND from meter where meternumber=$meternumber";
 if ($result = $mysqli->query($sql)){
     $row=$result->fetch_assoc();
-    $mmeternumber = $row['meternumber'];
-    $mtype = $row['type'];
-    $mcond = $row['cond'];
+    $meternumber = $row['METERNUMBER'];
+    $type = $row['TYPE'];
+    $cond = $row['COND'];
     
 }  else {
     echo "error: ". $mysqli->error;
@@ -89,15 +89,15 @@ $mysqli->close();
 	<p>Please fill in the following form to register as author.</p>
 	<form>
 		<label for="meternumber">METER NUMBER</label>
-		<input type="text" size="50" name="meternumber" value='<?php if(isset($_REQUEST['search_id'])){echo htmlentities($mmeternumber);} ?>'/>
+		<input type="text" size="50" name="meternumber" value='<?php if(isset($_REQUEST['search_id'])){echo htmlentities($meternumber);} ?>'/>
                 <input type="submit" value="Search" class="inline" name="search_id"/>
 		<p>
 		<label for="type">TYPE </label>
-		<input type="text" size="50" name="type" value='<?php if(isset($_REQUEST['search_id'])){echo htmlentities($mtype);} ?>' />
+		<input type="text" size="50" name="type" value='<?php if(isset($_REQUEST['search_id'])){echo htmlentities($type);} ?>' />
                 <input type="submit" value="Search" class="inline" name="search"/>
 		<p>
 		<label for="cond">COND</label>
-		<input type="text" size="50" name="cond" value='<?php if(isset($_REQUEST['search_id'])){echo htmlentities($mcond);} ?>'/>
+		<input type="text" size="50" name="cond" value='<?php if(isset($_REQUEST['search_id'])){echo htmlentities($cond);} ?>'/>
 		<p>
 			<input type="submit" value="Save" class="inline" name="insert"/>
 			<input type="reset" value="Cancel" class="inline" />
